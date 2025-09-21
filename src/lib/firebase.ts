@@ -11,6 +11,12 @@ const config = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-export const app = getApps().length ? getApps()[0] : initializeApp(config);
-export const db = getFirestore(app);
-export const messaging = getMessaging(app);
+let app, db, messaging;
+if (typeof window !== "undefined") {
+  // Client-side
+  app = getApps().length ? getApps()[0] : initializeApp(config);
+  db = getFirestore(app);
+  messaging = getMessaging(app);
+}
+
+export { app, db, messaging };
