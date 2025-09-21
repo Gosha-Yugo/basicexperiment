@@ -3,8 +3,8 @@
 import { messaging } from "firebase-admin";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
-import { schedule } from "firebase-functions/v1/pubsub";
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
+import { onSchedule } from "firebase-functions/v2/scheduler";
 
 initializeApp();
 const db = getFirestore();
@@ -70,7 +70,7 @@ export const addNotificationDoc = onDocumentCreated("plans/{planId}", async (eve
 });
 
 // 1分毎に通知ドキュメントをチェックして、あればFCM送信＆ドキュメント削除
-export const checkNotification = schedule("every 1 minutes").onRun(async (context) => {
+export const checkNotification = onSchedule("every 1 minutes", async (context) => {
   const now = new Date();
   const hh = now.getHours();
   const mm = now.getMinutes();
