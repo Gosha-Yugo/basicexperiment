@@ -1,7 +1,13 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  //output: 'export',          // ← これが重要
-  images: { unoptimized: true }, // 画像最適化を無効化（export用）
-};
+import nextPWA from "next-pwa";
 
-module.exports = nextConfig;
+const withPWA = nextPWA({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+});
+
+const nextConfig = withPWA({
+  reactStrictMode: true,
+});
+
+export default nextConfig;
