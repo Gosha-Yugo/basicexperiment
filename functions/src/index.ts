@@ -72,11 +72,17 @@ export const addNotificationDoc = onDocumentCreated("plans/{planId}", async (eve
 // 1分毎に通知ドキュメントをチェックして、あればFCM送信＆ドキュメント削除
 export const checkNotification = onSchedule("every 1 minutes", async (context) => {
   const now = new Date();
-  const hh = now.getHours();
-  const mm = now.getMinutes();
-  const nowHHmm = (hh < 10 ? `0${hh}` : `${hh}`) + ":" + (mm < 10 ? `0${mm}` : `${mm}`);
 
-  const snapshot = await db.collection("notifications").where("time", "==", nowHHmm).get();
+  const formatter = new Intl.DateTimeFormat("ja-JP", {
+    timeZone: "Asia/Tokyo",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false, // 24時間表記
+  });
+
+  const japanTime = formatter.format(now);
+
+  const snapshot = await db.collection("notifications").where("time", "==", japanTime).get();
 
   if (snapshot.empty) {
     console.log("No matching documents.");
