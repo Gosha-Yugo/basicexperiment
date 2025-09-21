@@ -9,6 +9,9 @@
     "lint": "next lint",
     "export": "next export"
   },
+  "resolutions": {
+    "@types/mime": "^1"
+  },
   "dependencies": {
     "dayjs": "^1.11.18",
     "firebase": "^12.2.1",
