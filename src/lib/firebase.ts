@@ -1,6 +1,6 @@
-import { initializeApp, getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getMessaging } from "firebase/messaging";
+import { initializeApp, getApps, FirebaseApp } from "firebase/app";
+import { Firestore, getFirestore } from "firebase/firestore";
+import { getMessaging, Messaging } from "firebase/messaging";
 
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,9 +9,10 @@ const config = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
-let app, db, messaging;
+let app: FirebaseApp, db: Firestore, messaging: Messaging;
 if (typeof window !== "undefined") {
   // Client-side
   app = getApps().length ? getApps()[0] : initializeApp(config);
