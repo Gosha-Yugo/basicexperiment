@@ -6,9 +6,8 @@ import { getMessaging } from "firebase-admin/messaging";
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
 import { onSchedule } from "firebase-functions/v2/scheduler";
 
-const app = initializeApp();
+initializeApp();
 const db = getFirestore();
-const messaging = getMessaging(app);
 
 type PlanDoc = {
   uid: string;
@@ -101,8 +100,7 @@ export const checkNotification = onSchedule("every 1 minutes", async (context) =
     console.log(data);
 
     // FCM送信
-    messaging.send({
-      token: data.token,
+    getMessaging().sendToDevice(data.token, {
       notification: {
         title: data.title,
         body: data.body,
