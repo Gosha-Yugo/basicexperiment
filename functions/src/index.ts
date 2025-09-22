@@ -100,7 +100,7 @@ export const checkNotification = onSchedule("every 1 minutes", async (context) =
     console.log(data);
 
     // FCM送信
-    getMessaging().sendToDevice(data.token, {
+    await getMessaging().sendToDevice(data.token, {
       notification: {
         title: data.title,
         body: data.body,
