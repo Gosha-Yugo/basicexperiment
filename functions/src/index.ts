@@ -1,13 +1,14 @@
 /// <reference types="minimatch" />
 
-import { messaging } from "firebase-admin";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
+import { getMessaging } from "firebase-admin/messaging";
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
 import { onSchedule } from "firebase-functions/v2/scheduler";
 
-initializeApp();
+const app = initializeApp();
 const db = getFirestore();
+const messaging = getMessaging(app);
 
 type PlanDoc = {
   uid: string;
@@ -81,6 +82,7 @@ export const checkNotification = onSchedule("every 1 minutes", async (context) =
   });
 
   const japanTime = formatter.format(now);
+  console.log(japanTime);
 
   const snapshot = await db.collection("notifications").where("time", "==", japanTime).get();
 
@@ -99,7 +101,7 @@ export const checkNotification = onSchedule("every 1 minutes", async (context) =
     console.log(data);
 
     // FCM送信
-    messaging().send({
+    messaging.send({
       token: data.token,
       notification: {
         title: data.title,
