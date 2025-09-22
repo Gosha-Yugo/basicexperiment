@@ -100,11 +100,12 @@ export const checkNotification = onSchedule("every 1 minutes", async (context) =
     console.log(data);
 
     // FCM送信
-    await getMessaging().sendToDevice(data.token, {
+    await getMessaging().send({
       notification: {
         title: data.title,
         body: data.body,
       },
+      token: data.token,
     });
 
     // 通知ドキュメント削除
